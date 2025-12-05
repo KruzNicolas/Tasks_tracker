@@ -7,6 +7,11 @@
 const CONFIG = {
   SHEETS: {
     TASK: "Task",
-    DASHBOARD: "📊 Dashboard",
+    COMPLETED_TASKS: "Completed Tasks",
+    DASHBOARD: "Dashboard",
+  },
+  COLORS: {
+    HEADER_BG: "#db4c3f", // Todoist Red
+    HEADER_FONT: "#ffffff", // White
   },
 };

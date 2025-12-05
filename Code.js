@@ -1,24 +1,8 @@
-function testTodoist() {
-  const SelfToken =
-    PropertiesService.getScriptProperties().getProperty("TODOIST_TOKEN");
-
-  const Url = "https://api.todoist.com/rest/v2/tasks";
-
-  let options = {
-    method: "get",
-    headers: {
-      Authorization: "Bearer " + SelfToken,
-    },
-  };
-
-  let response = UrlFetchApp.fetch(Url, options);
-  let jsonString = response.getContentText();
-  let parsedAnswer = Utils.ClearAnswer(jsonString);
-  Logger.log(parsedAnswer);
-}
-
 function doPost(e) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Task");
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(
+    CONFIG.SHEETS.TASK
+  );
+
   try {
     const jsonString = e.postData.contents;
     const data = JSON.parse(jsonString);
@@ -28,26 +12,45 @@ function doPost(e) {
       const cleanTask = Utils.CleanTask(rawTask);
 
       if (sheet) {
-        sheet.appendRow([
-          cleanTask.id,
-          cleanTask.title,
-          cleanTask.description,
-          cleanTask.link,
-          cleanTask.date,
-          "",
-          false,
-        ]);
+        // We search for the last real row based on column C (Task) which always has text.
+        // sheet.getLastRow() returns 1000 because of pre-inserted checkboxes.
+        const cValues = sheet.getRange("C1:C").getValues();
+        let lastRowIndex = -1;
+
+        // Search from bottom to top for the first cell with content
+        for (let i = cValues.length - 1; i >= 0; i--) {
+          if (cValues[i][0] !== "") {
+            lastRowIndex = i;
+            break;
+          }
+        }
+
+        // Calculate the next row to write to
+        const nextRow = lastRowIndex + 2;
+
+        const rowData = [
+          [
+            "", // Column A (Empty Margin)
+            cleanTask.date, // B
+            cleanTask.title, // C
+            cleanTask.description, // D
+            cleanTask.link, // E
+            cleanTask.priority, // F
+            "Not Assigned", // G
+            false, // H
+            cleanTask.id, // I (Hidden)
+          ],
+        ];
+
+        sheet.getRange(nextRow, 1, 1, 9).setValues(rowData);
       }
     }
-    return ContentService.createTextOutput("OK").setMimeType(
-      ContentService.MimeType.TEXT
-    );
+    return ContentService.createTextOutput("OK");
   } catch (error) {
-    if (sheet) {
-      sheet.appendRow(["❌ ERROR JS", error.toString(), new Date()]);
-    }
-    return ContentService.createTextOutput("Error").setMimeType(
-      ContentService.MimeType.TEXT
-    );
+    return ContentService.createTextOutput("Error");
   }
+}
+
+function processEdit(e) {
+  Utils.onTaskComplete(e);
 }
