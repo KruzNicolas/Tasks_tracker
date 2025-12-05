@@ -32,7 +32,7 @@ function setupSheets() {
   // Hide ID Column (I)
   taskSheet.hideColumns(9);
 
-  const persons = ["Nicolas", "Yuki", "Ryuu", "Riley", "Izumi", "Not Assigned"];
+  const persons = ["Person 1", "Person 2", "Person 3", "Not Assigned"];
   const rule = SpreadsheetApp.newDataValidation()
     .requireValueInList(persons)
     .build();
