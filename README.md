@@ -4,10 +4,6 @@ A robust Google Apps Script integration that synchronizes your Todoist tasks int
 
 ![Tasks Tracker Preview](todo_tracker.webp)
 
-## 📹 Demo en Video
-
-[![Watch the demo](https://img.youtube.com/vi/CSgeAeJ42n4/0.jpg)](https://youtu.be/CSgeAeJ42n4)
-
 ## 🚀 Features
 
 - **Real-time Synchronization**: Automatically adds new Todoist tasks to the Google Sheet via Webhooks (`item:added`).
