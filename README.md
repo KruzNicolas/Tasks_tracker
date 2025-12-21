@@ -7,7 +7,7 @@ A robust Google Apps Script integration that synchronizes your Todoist tasks int
 ## 🚀 Features
 
 - **Real-time Synchronization**: Automatically adds new Todoist tasks to the Google Sheet via Webhooks (`item:added`).
-- **Two-way Interaction**: completing a task in the Sheet (via checkbox) closes it in Todoist.
+- **Two-way Interaction**: Completing a task in the Sheet (via checkbox) closes it in Todoist.
 - **Custom UI**: Generates a clean, table-styled layout with specific borders, margins, and Todoist-brand colors.
 - **Priority Support**: Visualizes task priority levels.
 - **History Tracking**: Automatically moves completed tasks to a "Completed Tasks" sheet with a timestamp.
